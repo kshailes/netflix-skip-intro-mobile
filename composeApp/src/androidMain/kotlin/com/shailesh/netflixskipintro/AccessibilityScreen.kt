@@ -177,19 +177,42 @@ fun AccessibilityScreen(viewModel: AccessibilityViewModel = viewModel()) {
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold
                                 )
+                                val hasPermission = viewModel.hasNotificationPermission(context)
                                 Text(
-                                    "Notify when apps are monitored",
+                                    if (hasPermission) 
+                                        "Notify when apps are monitored" 
+                                    else 
+                                        "Permission required (tap to enable)",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = if (hasPermission) 
+                                        MaterialTheme.colorScheme.onSurfaceVariant 
+                                    else 
+                                        MaterialTheme.colorScheme.error
                                 )
                             }
-                            Switch(
-                                checked = showNotifications,
-                                onCheckedChange = { 
-                                    viewModel.setShowNotifications(it)
-                                },
-                                enabled = isServiceEnabled
-                            )
+                            
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                val hasPermission = viewModel.hasNotificationPermission(context)
+                                if (!hasPermission) {
+                                    FilledTonalButton(
+                                        onClick = { viewModel.openAppSettings(context) },
+                                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
+                                    ) {
+                                        Text("Enable", style = MaterialTheme.typography.bodySmall)
+                                    }
+                                }
+                                
+                                Switch(
+                                    checked = showNotifications,
+                                    onCheckedChange = { 
+                                        viewModel.setShowNotifications(it)
+                                    },
+                                    enabled = isServiceEnabled && viewModel.hasNotificationPermission(context)
+                                )
+                            }
                         }
                     }
                 }
