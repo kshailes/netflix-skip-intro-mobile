@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NetflixSkipIntro</string>
+    <string name="accessibility_service_description">This service allows the app to automatically detect and click buttons in other apps, such as the "Skip Intro" button in Netflix. The service can interact with any app on your device. Your privacy is important - this app does not collect or transmit any data.</string>
+</resources>
